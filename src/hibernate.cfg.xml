@@ -4,11 +4,6 @@
 	"http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
 <hibernate-configuration>
 	<session-factory>
-		<!-- 配置数据库的信息，必须的 -->
-		<!-- <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
-		<property name="hibernate.connection.url">jdbc:mysql:///s2s4h5?useSSL=false</property>
-		<property name="hibernate.connection.username">root</property>
-		<property name="hibernate.connection.password">root</property> -->
 		<!-- 配置hibernate信息，可选的 -->
 		<!-- 有sql语句输出 -->
 		<property name="hibernate.show_sql">true</property>
@@ -18,8 +13,8 @@
 		<property name="hibernate.hbm2ddl.auto">update</property>
 		<!-- 配置数据库方言 -->
 		<property name="hibernate.dialect">org.hibernate.dialect.MySQL5Dialect</property>
-		<!-- 绑定session -->
-		<property name="hibernate.current_session_context_class">thread</property>
+		<!-- 绑定session,整合spring时必须删掉或者改值org.springframework.orm.hibernate5.SpringSessionContext -->
+		<property name="hibernate.current_session_context_class">org.springframework.orm.hibernate5.SpringSessionContext</property>
 		<!-- 把映射文件放到核心配置文件中，必须的 -->
 		<mapping resource="com/oracle/entity/user.hbm.xml" />
 	</session-factory>

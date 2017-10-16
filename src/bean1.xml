@@ -23,8 +23,34 @@
 		<!-- 因为在hibernate核心配置文件中，没有数据库配置，数据库配置在spring里面，需要注入dataSource -->
 		<property name="dataSource" ref="dataSource"></property>
 		<!-- 指定使用的hibernate核心配置文件 -->
-		<property name="configLocaions" ref="classpath:hibernate.cfg.xml"></property>
+		<property name="configLocations" value="classpath:hibernate.cfg.xml"></property>
 	</bean>
 	<!-- 配置action的对象 -->
-	<bean id="userAction" class="com.oracle.action.UserAction" scope="prototype"></bean>
+	<bean id="userAction" class="com.oracle.action.UserAction" scope="prototype">
+		<!-- 注入service -->
+		<property name="userService" ref="userService"></property>
+	</bean>
+	<bean id="userService" class="com.oracle.service.UserService">
+		<!-- 注入dao：接口=实现类对象 -->
+		<property name="userDao" ref="userDaoImpl"></property>
+	</bean>
+	<!-- 创建实现类对象 -->
+	<bean id="userDaoImpl" class="com.oracle.dao.UserDaoImpl">
+		<!-- 注入hibernateTemplate对象 -->
+		<property name="hibernateTemplate" ref="hibernateTemplate"></property>
+	</bean>
+	<!-- 创建hibernateTemplate对象 -->
+	<bean id="hibernateTemplate" class="org.springframework.orm.hibernate5.HibernateTemplate">
+		<!-- 注入sessionFactory -->
+		<property name="sessionFactory" ref="sessionFactory"></property>
+	</bean>
+	<!-- 配置事务管理器 -->
+	<bean id="transactionManager" class="org.springframework.orm.hibernate5.HibernateTransactionManager">
+		<!-- 注入sessionFactory -->
+		<property name="sessionFactory" ref="sessionFactory"></property>
+	</bean>
+	<!-- 开启事务注解 -->
+	<tx:annotation-driven transaction-manager="transactionManager" />
+
+
 </beans>
